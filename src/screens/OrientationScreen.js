@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { View, Button, Dimensions, StyleSheet } from 'react-native';
 
-const HomeScreen = () => {
+const OrientationScreen = () => {
   const [orientation, setOrientation] = useState('PORTRAIT');
 
   useEffect(() => {
-    const handleChange = ({ screen }) => {
-      const { width, height } = screen;
+    const updateOrientation = () => {
+      const { width, height } = Dimensions.get('window');
       setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
     };
 
-    const subscription = Dimensions.addEventListener('change', handleChange);
+    // Gọi hàm cập nhật khi component mount
+    updateOrientation();
+
+    // Lắng nghe thay đổi kích thước màn hình
+    const subscription = Dimensions.addEventListener('change', updateOrientation);
 
     return () => {
+      // Xóa sự kiện khi component unmount
       subscription?.remove();
     };
   }, []);
@@ -21,21 +26,13 @@ const HomeScreen = () => {
     <View style={styles.container}>
       {orientation === 'PORTRAIT' ? (
         <View style={styles.buttonContainerPortrait}>
-          <View style={styles.buttonWrapper}>
-            <Button title="Button 1" onPress={() => {}} />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button title="Button 2" onPress={() => {}} />
-          </View>
+          <Button title="Button 1" onPress={() => {}} />
+          <Button title="Button 2" onPress={() => {}} />
         </View>
       ) : (
         <View style={styles.buttonContainerLandscape}>
-          <View style={styles.buttonWrapper}>
-            <Button title="Button 1" onPress={() => {}} />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button title="Button 2" onPress={() => {}} />
-          </View>
+          <Button title="Button 1" onPress={() => {}} />
+          <Button title="Button 2" onPress={() => {}} />
         </View>
       )}
     </View>
@@ -45,24 +42,17 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   buttonContainerPortrait: {
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    height: '50%', 
   },
   buttonContainerLandscape: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: '100%',
-  },
-  buttonWrapper: {
-    width: '50%', 
   },
 });
 
-export default HomeScreen;
+export default OrientationScreen;

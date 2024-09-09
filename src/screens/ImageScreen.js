@@ -9,7 +9,7 @@ const ImageScreen = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../assets/favicon.png')}
+        source={require('../../assets/favicon.png')}
         style={[styles.image, { width: imageWidth, height: imageHeight }]}
       />
     </View>
